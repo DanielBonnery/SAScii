@@ -5,7 +5,7 @@ read.SAScii2 <-
     x <- parse.SAScii( sas_ri , beginline , lrecl )
     y <- x[ !is.na( x[ , 'varname' ] ) , ]
     # (some will be converted to numeric later)
-    SASfile.partial<-readr::read_fwf(fn,readr::fwf_widths(y$widths,col_names=y$varname))
+    SASfile.partial<-readr::read_fwf(fn,readr::fwf_widths(y$width,col_names=y$varname))
     
     # loop through all columns to:
     # convert to numeric where necessary
