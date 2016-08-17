@@ -1,5 +1,5 @@
 read.SAScii3 <- 
-  function( fn , sas_ri ){
+  function( fn , sas_ri ,sel=NULL){
       SASinput <- readLines(sas_ri)
   SASinput <- gsub("\t", " ", SASinput)
   SASinput <- SASinput[1:length(SASinput)]
@@ -19,13 +19,16 @@ read.SAScii3 <-
   for (i in 1:length(FWFlines)) FWFlines[i] <- gsub("-", " - ", 
                                                     FWFlines[i], fixed = T)
   FWFlines <- FWFlines[which(gsub(" ", "", FWFlines) != "")]
-  Char=grepl("$",FWFlines)
+  Char=grepl("$",FWFlines,fixed=TRUE)
   FWFlines <- gsub("$","",FWFlines,fixed=TRUE)
-  FWFlines <- gsub(".","",FWFlines,fixed=TRUE)
-  FWFlines <- gsub("@","",FWFlines)
-  z <- t(sapply(FWFlines,function(x){unlist(strsplit(x,split =  "\\s+"))}))
+FWFlines <- gsub("\\.\\d+","",FWFlines)
+FWFlines <- gsub("@","",FWFlines)
+FWFlines <- gsub(".","",FWFlines,fixed=TRUE)
 
-y<-data.frame(varname=z[,2],start=z[,2],width=z[,3],char=Char)
-    X=readr::read_fwf(fn,readr::fwf_widths(y$width,col_names=levels(y$varname)[y$varname]))
-X[!Char] <- sapply(X[!Char],as.numeric)
-X}
+  z <- t(sapply(FWFlines,function(x){unlist(strsplit(x,split =  "\\s+"))}))
+    col_types=list(col_double(),col_character())[1+Char]
+  if(!is.null(sel)){vars<-is.element(z[,2],sel)}
+y<-data.frame(varname=z[vars,2],start=z[vars,2],end=s[vars,2]+z[vars,3],char=Char,stringsAsFactors = FALSE)
+col_types=col_types[z[,2][vars]]
+        X=readr::read_fwf(fn,readr::fwf_widths(start=y$start,end=y$end,col_names=y$varname),col_types = col_types)
+        }
