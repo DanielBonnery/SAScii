@@ -1,4 +1,4 @@
-parse.SAScii2<-function (sas_ri, beginline = 1, lrecl = NULL) 
+parse.SAScii3<-function (sas_ri, beginline = 1, lrecl = NULL) 
 {
   SASinput <- readLines(sas_ri)
   SASinput <- gsub("\t", " ", SASinput)
