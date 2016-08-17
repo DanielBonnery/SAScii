@@ -24,11 +24,9 @@ read.SAScii3 <-
 FWFlines <- gsub("\\.\\d+","",FWFlines)
 FWFlines <- gsub("@","",FWFlines)
 FWFlines <- gsub(".","",FWFlines,fixed=TRUE)
-
-  z <- t(sapply(FWFlines,function(x){unlist(strsplit(x,split =  "\\s+"))}))
-    col_types=list(col_double(),col_character())[1+Char]
-  if(!is.null(sel)){vars<-is.element(z[,2],sel)}
-y<-data.frame(varname=z[vars,2],start=z[vars,2],end=s[vars,2]+z[vars,3],char=Char,stringsAsFactors = FALSE)
+z <- t(sapply(FWFlines,function(x){unlist(strsplit(x,split =  "\\s+"))}))
+if(!is.null(sel)){vars<-is.element(z[,2],sel)}
+y<-data.frame(varname=z[vars,2],start=strtoi(z[vars,1]),end=strtoi(z[vars,1])+strtoi(z[vars,3])-1,char=Char[vars],stringsAsFactors = FALSE)
 col_types=col_types[z[,2][vars]]
-        X=readr::read_fwf(fn,readr::fwf_widths(start=y$start,end=y$end,col_names=y$varname),col_types = col_types)
+X=readr::read_fwf(fn,readr::fwf_positions(start=y$start,end=y$end,col_names=y$varname),col_types = col_types)
         }
