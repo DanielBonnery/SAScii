@@ -26,4 +26,7 @@ read.SAScii3 <-
   z <- t(sapply(FWFlines,function(x){unlist(strsplit(x,split =  "\\s+"))}))
 
 y<-data.frame(varname=z[,2],start=z[,2],width=z[,3],char=Char)
-    readr::read_fwf(fn,readr::fwf_widths(y$width,col_names=y$varname))}
+    X=readr::read_fwf(fn,readr::fwf_widths(y$width,col_names=levels(y$varname)[y$varname]))
+    cols.num <- c("a","b")
+X[!Char] <- sapply(X[!Char],as.numeric)
+X}
