@@ -27,6 +27,5 @@ read.SAScii3 <-
 
 y<-data.frame(varname=z[,2],start=z[,2],width=z[,3],char=Char)
     X=readr::read_fwf(fn,readr::fwf_widths(y$width,col_names=levels(y$varname)[y$varname]))
-    cols.num <- c("a","b")
 X[!Char] <- sapply(X[!Char],as.numeric)
 X}
